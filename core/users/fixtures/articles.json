@@ -1,0 +1,18 @@
+[
+  {
+    "model": "users.Article",
+    "pk": 1,
+    "fields": {
+      "name": "Article 1",
+      "user_id": "d4b0cb57-70c1-42c3-8ab1-4ac38478962e"
+    }
+  },
+  {
+    "model": "users.Article",
+    "pk": 2,
+    "fields": {
+      "name": "Article 2",
+      "user_id": "d4b0cb57-70c1-42c3-8ab1-4ac38478962e"
+    }
+  }
+]

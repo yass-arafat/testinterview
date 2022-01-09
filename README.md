@@ -1,54 +1,53 @@
-# TestInterview
+# How to run the project
 
-Behold My Awesome Project!
+- clone the project 
+```
+git clone https://github.com/yass-arafat/testinterview.git
+```
+- Start the server for local development:
+```bash
+docker-compose up -d --build
+```
+- Run a command inside the docker container:
 
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+```bash
+python manage.py migrate
+```
 
-License: MIT
+# How to test the code
 
-## Settings
-
-Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
-
-## Basic Commands
-
-### Setting Up Your Users
-
--   To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
-
--   To create an **superuser account**, use this command:
-
-        $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-### Type checks
-
-Running type checks with mypy:
-
-    $ mypy testinterview
-
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-#### Running tests with pytest
-
-    $ pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html).
-
-## Deployment
-
-The following details how to deploy this application.
-
-### Docker
-
-See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
+- create a user calling the api
+```
+curl --location --request POST 'http://localhost:8000/api/v1/users/' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer 4b60ff69b432cd8a7a4879d2e000e30f8db72ebe' \
+--data-raw '{
+    "username": "yassir",
+    "password": "test",
+    "email": "test@test.com",
+    "first_name": "test",
+    "last_name": "user"
+}'
+```
+this will provide a user code in the e.g
+```
+{
+    "id": "85af6242-b0b4-4eca-a20a-598ec723dfb3",
+    "username": "yassi",
+    "first_name": "test",
+    "last_name": "user",
+    "email": "testy1@test.com",
+    "auth_token": "fc65603ecc3c935d232f6034ace0b974ece689bb"
+}
+```
+- now go to project directory `core/users/fixtures` and edit the articles.json file
+replace the `user_id` with the user id got from the response
+- Run a command inside the docker container:
+`make` . it will insert a article with that user id
+- now call the api to get the article list of the user
+```
+curl --location --request GET 'http://localhost:8000/api/v1/test/user/{user_id}/article' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer 4b60ff69b432cd8a7a4879d2e000e30f8db72ebe' \
+--data-raw ''
+```
